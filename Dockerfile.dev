@@ -1,0 +1,33 @@
+FROM public.ecr.aws/docker/library/python:3.10
+
+# Ensure unbuffered output for logs
+ENV PYTHONUNBUFFERED=1
+
+# Set working directory
+WORKDIR /app
+
+# Create and activate virtual environment
+# RUN python3 -m venv .venv
+# ENV PATH="/app/.venv/bin:$PATH"
+
+# Upgrade pip
+RUN pip install --upgrade pip
+
+# Copy only requirements first (for caching)
+COPY requirements.txt .
+# COPY ../.env.local.dev /app/.env
+
+# Install dependencies (cache pip downloads)
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install --no-cache-dir -r requirements.txt
+
+# Copy the rest of the code (optional for dev — docker-compose will mount it)
+COPY ./app /app/app
+COPY ./scripts /app/scripts
+COPY alembic.ini /app/
+
+# Expose FastAPI default port
+EXPOSE 8000 8001
+
+# Run Uvicorn in reload mode for development
+# CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--reload"]
