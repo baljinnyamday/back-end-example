@@ -28,6 +28,12 @@ dependencies = [
     "asyncpg>=0.30.0",
     "aiofiles>=24.1.0",
     "pandas>=2.3.1",
+    "beautifulsoup4>=4.14.0",
+    "crawl4ai>=0.7.4",
+    "litellm==1.76.3",
+    "playwright>=1.55.0",
+    "pydantic-ai>=1.0.10",
+    "pydantic-ai-slim[mcp]>=1.0.10",
 ]
 
 [tool.uv]
@@ -54,20 +60,20 @@ exclude = ["alembic"]
 
 [tool.ruff.lint]
 select = [
-    "E",  # pycodestyle errors
-    "W",  # pycodestyle warnings
-    "F",  # pyflakes
-    "I",  # isort
-    "B",  # flake8-bugbear
-    "C4",  # flake8-comprehensions
-    "UP",  # pyupgrade
+    "E",      # pycodestyle errors
+    "W",      # pycodestyle warnings
+    "F",      # pyflakes
+    "I",      # isort
+    "B",      # flake8-bugbear
+    "C4",     # flake8-comprehensions
+    "UP",     # pyupgrade
     "ARG001", # unused arguments in functions
 ]
 ignore = [
-    "E501",  # line too long, handled by black
-    "B008",  # do not perform function calls in argument defaults
-    "W191",  # indentation contains tabs
-    "B904",  # Allow raising exceptions without from e, for HTTPException
+    "E501", # line too long, handled by black
+    "B008", # do not perform function calls in argument defaults
+    "W191", # indentation contains tabs
+    "B904", # Allow raising exceptions without from e, for HTTPException
 ]
 
 [tool.ruff.lint.pyupgrade]

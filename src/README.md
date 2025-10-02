@@ -1,0 +1,1 @@
+either just go to each site and get all the necessary urls back then we just call ux agent on each url???

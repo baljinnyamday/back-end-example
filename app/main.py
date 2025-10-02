@@ -1,5 +1,6 @@
-from contextlib import asynccontextmanager
+import asyncio
 import logging
+from contextlib import asynccontextmanager
 
 import sentry_sdk
 from fastapi import FastAPI
@@ -8,10 +9,11 @@ from starlette.middleware.cors import CORSMiddleware
 
 from app.api.main import api_router
 from app.core.config import settings
+from app.core.db import initialize_tables
+from app.core.postgres import cavecad as cavecad_db
+from app.core.postgres import db_pg as database
 from app.core.redis import pool, redis_manager
 from app.core.ws import websocket_conn_man
-from app.core.db import initialize_tables
-from app.core.postgres import db_pg as database, cavecad as cavecad_db
 
 logger = logging.getLogger(__name__)
 
@@ -29,8 +31,9 @@ async def lifespan(app: FastAPI):
     # Startup items
     logger.info("Starting Redis listener...")
     await websocket_conn_man.start_listening()
-    await database.connect()
+    # await database.connect()
     await redis_manager.init_pool()
+    # await asyncio.create_subprocess_exec("./src/scripts/run-mcp.sh")
     # await cavecad_db.connect()
     # await initialize_tables(database)
     yield
@@ -39,7 +42,7 @@ async def lifespan(app: FastAPI):
     logger.info("Shutting down Redis listener...")
     await websocket_conn_man.stop_listening()
     await pool.disconnect()
-    await database.disconnect()
+    # await database.disconnect()
     # await cavecad_db.disconnect()
 
     # Close the main Redis pool if needed
@@ -59,12 +62,6 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:3000",
-        "http://mnoytaspd1",
-        "https://mnoytaspd1",
-        "http://mnoytaspd1:3001",
-        "https://mnoytaspd1:3001",
-        "http://fragmentation-frontend:3000",
-        "https://fragmentation-frontend:3000",
     ],
     allow_credentials=True,
     allow_methods=["*"],

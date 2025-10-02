@@ -73,7 +73,7 @@ class Settings(BaseSettings):
             host=self.POSTGRES_SERVER,
             port=self.POSTGRES_PORT,
             path=self.POSTGRES_DB,
-        )
+        )  # type: ignore
 
     @computed_field
     @property
@@ -85,7 +85,7 @@ class Settings(BaseSettings):
             host=self.POSTGRES_SERVER,
             port=self.POSTGRES_PORT,
             path=self.POSTGRES_DB,
-        )
+        )  # type: ignore
 
     @computed_field
     @property
@@ -97,7 +97,7 @@ class Settings(BaseSettings):
             host=cavecad_config["host"],
             port=int(cavecad_config["port"]),
             path=cavecad_config["database"],
-        )
+        )  # type: ignore
 
     SMTP_TLS: bool = True
     SMTP_SSL: bool = False
